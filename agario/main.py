@@ -23,7 +23,7 @@ def setup():
 # Pour chaque Agent, récupère la liste des perceptions.
 def computePerception(agent):
     objList = core.memory("agents") + core.memory("creeps") + core.memory("obstacles")
-    agent.listPerceptron = []
+    agent.listPerception = []
     # Pour chaque Agent dans listeObj de l'environnement
     # Pour chaque objet dans le champ de vision de l'Agent
     for obj in objList:
