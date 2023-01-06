@@ -51,12 +51,14 @@ class Agent :
             repulsion += self.body.position - min.position
         if isinstance(min,Agent) :
             if self.body.mass > min.body.mass :
+                # l'autre - toi (agent)
                 attraction += min.body.position - self.body.position
             else :
+                # toi (agent) - l'autre
                 repulsion += self.body.position - min.body.position
 
         if repulsion.length() > 0 :
-            repulsion.scale_to_length((1/repulsion.length()**2))
+            repulsion.scale_to_length(1/repulsion.length()**2)
         self.body.acceleration = attraction + repulsion
 
     # Appel la fonction show de la class Body

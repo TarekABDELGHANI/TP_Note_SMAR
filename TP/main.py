@@ -7,7 +7,6 @@ from body import Body
 from creep import Creep
 from obstacle import Obstacle
 
-
 def setup():
     print("Setup START---------")
     core.fps = 30
@@ -30,6 +29,7 @@ def computePerception(agent):
         if agent.body.fustrum.inside(obj) and agent.uuid != obj.uuid:
             # On l'ajoute dans la liste des perceptions de l'agent
             agent.listPerception.append(obj)
+    #print(agent.listPerception.__sizeof__())
 
 
 # Pour chaque Agent, récupère la décision qu'il souhaite réaliser
@@ -42,7 +42,6 @@ def applyDecision(agent):
 
 # Ajoute aléatoirement des agents, creeps et obstacles.
 def initializeEnv():
-    nb_random = random.randint(0,30)
     for i in range(5):
         core.memory("agents").append(Agent(Body()))
 
@@ -91,6 +90,7 @@ def run():
         obstacle.show()
 
     for agent in core.memory("agents"):
+        #print("agent", agent.uuid)
         computePerception(agent)
 
     for agent in core.memory("agents"):
