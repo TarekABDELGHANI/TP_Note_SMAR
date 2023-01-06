@@ -25,30 +25,27 @@ class Body :
         # self.vitesse += self.acceleration
         # if self.vitesse.length() > self.maxVitesse:
         #     self.vitesse.scale_to_length(self.maxVitesse)
-        for agent in self.parent :
-            S,I,R,D,Q = agent.filtre()
-            objList = S + I + R + D + Q
-            objList.sort(key=lambda x: x.dist, reverse=False)
-            min = None
-            attraction = Vector2()
-            repulsion = Vector2()
-            if len(objList) > 0:
-                min = objList[0]
-            if min.statut == 'S' :
-                break
-            # Si on a dans notre champ de vision un Infecté, on se rapproche de lui car on va bientot tomber malade
-            if agent.statut == 'S' and min.statut == 'I':
-                attraction += min.body.position - agent.body.position
-            # Si on est infecté et qu'on a dans notre champ de vision un mort, on se rapproche de lui pour signifier à l'esprit qu'on va bientot mourrir
-            if agent.statut == 'I' and min.statut == 'D' :
-                attraction += min.body.position - agent.body.position
-            # Si on est infecté et qu'on a dans notre champ de vision un retabli, on se rapproche de lui pour signifier à l'esprit qu'on va etre rétabli
-            if agent.statut == 'I' and min.statut == 'R' :
-                repulsion += agent.body.position - min.body.position
-            self.border()
-            if repulsion.length() > 0 :
-                repulsion.scale_to_length(1/repulsion.length()**2)
-            agent.body.acceleration = attraction + repulsion
+        S,I,R,D,Q = self.parent.filtre()
+        objList = S + I + R + D + Q
+        objList.sort(key=lambda x: x.dist, reverse=False)
+        min = None
+        attraction = Vector2()
+        repulsion = Vector2()
+        if len(objList) > 0:
+            min = objList[0]
+        # Si on a dans notre champ de vision un Infecté, on se rapproche de lui car on va bientot tomber malade
+        if self.parent.statut == 'S' and min.statut == 'I':
+            attraction += min.body.position - self.parent.body.position
+        # Si on est infecté et qu'on a dans notre champ de vision un mort, on se rapproche de lui pour signifier à l'esprit qu'on va bientot mourrir
+        if self.parent.statut == 'I' and min.statut == 'D' :
+            attraction += min.body.position - self.parent.body.position
+        # Si on est infecté et qu'on a dans notre champ de vision un retabli, on se rapproche de lui pour signifier à l'esprit qu'on va etre rétabli
+        if self.parent.statut == 'I' and min.statut == 'R' :
+            repulsion += self.parent.body.position - min.body.position
+        self.border()
+        if repulsion.length() > 0 :
+            repulsion.scale_to_length(1/repulsion.length()**2)
+        self.parent.body.acceleration = attraction + repulsion
 
     # gestion des bords
     def border(self):
